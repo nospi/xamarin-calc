@@ -6,11 +6,11 @@ namespace XamarinCalc
 {
     public partial class MainPage : ContentPage
     {
-        private List<string> workingEquation = new List<string>();
-        private string workingNumber = "";
+        string workingNumber = "";
+        List<string> workingEquation = new List<string>();
 
         // this defines our order of operations. tweak this for alternate universes
-        private Dictionary<string, int> precedenceTable = new Dictionary<string, int>()
+        Dictionary<string, int> precedenceTable = new Dictionary<string, int>()
         {
             { "(", 5 },
             { ")", 4 },
@@ -23,6 +23,11 @@ namespace XamarinCalc
         public MainPage()
         {
             InitializeComponent();
+        }
+
+        void refreshDisplay()
+        {
+            LblOutput.Text = string.Join(" ", workingEquation) + " " + workingNumber;
         }
 
         void pushOperator(string op)
@@ -47,29 +52,10 @@ namespace XamarinCalc
             refreshDisplay();
         }
 
-        void refreshDisplay()
-        {
-            LblOutput.Text = string.Join(" ", workingEquation) + " " + workingNumber;
-        }
-
-        void Clear_Clicked(object sender, EventArgs e)
-        {
-            workingEquation.Clear();
-            workingNumber = "";
-            refreshDisplay();
-        }
-
         bool isOperator(string token)
         {
-            switch (token)
-            {
-                case "+":
-                case "-":
-                case "*":
-                case "/":
-                    return true;
-                default: return false;
-            }
+            List<string> operatorTokens = new List<string>() { "+", "-", "*", "/" };
+            return operatorTokens.Contains(token);
         }
 
         bool isNumber(string token)
@@ -82,9 +68,18 @@ namespace XamarinCalc
             return precedenceTable[lhs] > precedenceTable[rhs];
         }
 
+        bool isLeftBracket(string val)
+        {
+            return val == "(";
+        }
+
+        bool isRightBracket(string val)
+        {
+            return val == ")";
+        }
+
         List<string> shuntingAlgorithm(List<string> tokens)
         {
-
             Stack<string> stack = new Stack<string>();
             List<string> queue = new List<string>();
 
@@ -112,7 +107,7 @@ namespace XamarinCalc
                     {
                         queue.Add(stack.Pop());
                     }
-                    stack.Pop(); // pop the left bracket and discard
+                    stack.Pop(); // pop the opening left bracket and discard
                 }
             }
 
@@ -136,9 +131,8 @@ namespace XamarinCalc
                 }
                 else if (isOperator(token))
                 {
-                    var rhs = float.Parse(stack.Pop());
-                    var lhs = float.Parse(stack.Pop());
-
+                    float rhs = float.Parse(stack.Pop());
+                    float lhs = float.Parse(stack.Pop());
                     float result = 0;
 
                     switch (token)
@@ -167,26 +161,32 @@ namespace XamarinCalc
                 : float.NaN;
         }
 
+        void Clear_Clicked(object sender, EventArgs e)
+        {
+            workingEquation.Clear();
+            workingNumber = "";
+            refreshDisplay();
+        }
+
         void Equals_Clicked(object sender, EventArgs e)
         {
             if (workingNumber.Length > 0)
             {
                 workingEquation.Add(workingNumber);
-                workingNumber = "";
             }
 
             try
             {
                 List<string> converted = shuntingAlgorithm(workingEquation);
                 float result = reversePolish(converted);
-
-                workingEquation.Clear();
                 LblOutput.Text = result.ToString();
             } catch (Exception error)
             {
-                workingEquation.Clear();
-                workingNumber = "";
                 LblOutput.Text = "ERROR: " + error.Message;
+            } finally
+            {
+                workingNumber = "";
+                workingEquation.Clear();
             }
         }
 
@@ -194,16 +194,6 @@ namespace XamarinCalc
         {
             Button button = sender as Button;
             pushOperator(button.Text);
-        }
-
-        bool isLeftBracket(string val)
-        {
-            return val == "(";
-        }
-
-        bool isRightBracket(string val)
-        {
-            return val == ")";
         }
 
         void Bracket_Clicked(object sender, EventArgs e)
