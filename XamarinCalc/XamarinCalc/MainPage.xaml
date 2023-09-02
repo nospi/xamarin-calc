@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinCalc.MainPage">
+
+    <StackLayout Padding="20" BackgroundColor="DarkSlateGray">
+        <Frame BackgroundColor="WhiteSmoke" Margin="0,0,0,20">
+            <Label x:Name="LblOutput" Text="0" FontSize="36" FontAttributes="Bold" HorizontalOptions="End" TextColor="Black" />
+        </Frame>
+        <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Row="0" Grid.Column="0" Text="C" FontSize="Medium" Clicked="Clear_Clicked" />
+            <Button Grid.Row="0" Grid.Column="1" Text="(" FontSize="Medium" Clicked="Bracket_Clicked"  />
+            <Button Grid.Row="0" Grid.Column="2" Text=")" FontSize="Medium" Clicked="Bracket_Clicked"  />
+            <Button Grid.Row="0" Grid.Column="3" Text="/" FontSize="Medium" Clicked="Operator_Clicked"  />
+
+            <Button Grid.Row="1" Grid.Column="0" Text="7" FontSize="Medium" Clicked="Number_Clicked"  />
+            <Button Grid.Row="1" Grid.Column="1" Text="8" FontSize="Medium" Clicked="Number_Clicked"  />
+            <Button Grid.Row="1" Grid.Column="2" Text="9" FontSize="Medium" Clicked="Number_Clicked"  />
+            <Button Grid.Row="1" Grid.Column="3" Text="*" FontSize="Medium" Clicked="Operator_Clicked"  />
+
+            <Button Grid.Row="2" Grid.Column="0" Text="4" FontSize="Medium" Clicked="Number_Clicked"  />
+            <Button Grid.Row="2" Grid.Column="1" Text="5" FontSize="Medium" Clicked="Number_Clicked"  />
+            <Button Grid.Row="2" Grid.Column="2" Text="6" FontSize="Medium" Clicked="Number_Clicked"  />
+            <Button Grid.Row="2" Grid.Column="3" Text="-" FontSize="Medium" Clicked="Operator_Clicked"  />
+
+            <Button Grid.Row="3" Grid.Column="0" Text="1" FontSize="Medium" Clicked="Number_Clicked"  />
+            <Button Grid.Row="3" Grid.Column="1" Text="2" FontSize="Medium" Clicked="Number_Clicked"  />
+            <Button Grid.Row="3" Grid.Column="2" Text="3" FontSize="Medium" Clicked="Number_Clicked"  />
+            <Button Grid.Row="3" Grid.Column="3" Text="+" FontSize="Medium" Clicked="Operator_Clicked" />
+
+            <Button Grid.Row="4" Grid.Column="0" Text="." FontSize="Medium" Clicked="Decimal_Clicked"  />
+            <Button Grid.Row="4" Grid.Column="1" Text="0" FontSize="Medium" Clicked="Number_Clicked" />
+            <Button Grid.Row="4" Grid.Column="2" Text="=" FontSize="Medium" Grid.ColumnSpan="2" Clicked="Equals_Clicked" />
+        </Grid>
+    </StackLayout>
+
+</ContentPage>
